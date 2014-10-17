@@ -1,0 +1,13 @@
+{
+    "name": "REMOTE-server-to-server-with-arduino",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.9.7",
+        "socket.io": "*",
+        "socket.io-client": "^1.1.0"
+    }
+}

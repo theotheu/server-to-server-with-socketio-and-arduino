@@ -1,0 +1,13 @@
+{
+  "name": "server-to-server-with-arduino",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node localServer.js"
+  },
+  "dependencies": {
+    "johnny-five": "^0.8.17",
+    "socket.io": "*",
+    "socket.io-client": "^1.1.0"
+  }
+}
