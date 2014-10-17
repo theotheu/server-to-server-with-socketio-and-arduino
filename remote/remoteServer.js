@@ -3,7 +3,7 @@ var express = require("express"),
     app = express(),
     server = require("http").createServer(app),
     io = require("socket.io").listen(server),
-    localConfig = require('../../config.json'),
+    localConfig = require('../config/config.json'),
     port = localConfig.remote.port;
 
 app.get("/", function (req, res) {
