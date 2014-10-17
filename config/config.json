@@ -1,0 +1,11 @@
+
+{
+    "local": {
+
+    },
+    "remote": {
+        "port":3000,
+        "fqdn": "http://server7.tezzt.nl"
+    }
+
+}

@@ -3,7 +3,8 @@ var express = require("express"),
     app = express(),
     server = require("http").createServer(app),
     io = require("socket.io").listen(server),
-    port = 3000;
+    localConfig = require('./config-test.json'),
+    port = localConfig.remote.port;
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
