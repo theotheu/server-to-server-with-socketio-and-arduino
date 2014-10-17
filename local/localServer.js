@@ -53,7 +53,7 @@ socket.on('connect', function () {
 
         // if board is ready
         if (board.isReady) {
-            console.log("Board is ready. Updating the flashing rate to ", rate);
+            console.log("Board is ready. Updating the flash rate to ", rate);
             led.strobe(rate);
             socket.emit("localMessage", "Flash rate set to " + rate);
         } else {
