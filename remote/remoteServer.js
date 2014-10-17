@@ -24,9 +24,9 @@ io.sockets.on("connection",function(socket){
     });
 
     // When we receive a message...
-    socket.on("message",function(data){
-        console.log('message', data);
-        io.sockets.emit('message', 'bounce --> ' + data);
+    socket.on("localMessage",function(data){
+        console.log('localMessage from laptop', data);
+        io.sockets.emit('localMessage', data);
         // We got a message... I dunno what we should do with this...
     });
 });

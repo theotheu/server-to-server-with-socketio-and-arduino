@@ -43,20 +43,23 @@ io.sockets.on("connection", function (socket) {
 });
 
 // Client
-var socket = remoteServer.connect('http://server7.tezzt.nl:8100');
+//var socket = remoteServer.connect('http://server7.tezzt.nl:8100');
+var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
 socket.on('connect', function () {
-    socket.emit("message", "This is my message vanaf mijn laptopje");
 
     socket.on('setMilliseconds', function (data) {
         var rate = parseInt(data, 10);
-        console.log("We got a new time for flashing the light(" + rate +  ' milliseconds). If the board is ready, we will update the interval.\n');
+        console.log("We got a new flash rate (" + rate +  ' milliseconds). If the board is ready, we will update the flash rate.\n');
 
         // if board is ready
         if (board.isReady) {
-            console.log("Board is ready. Updating the flashing...", rate);
+            console.log("Board is ready. Updating the flashing rate to ", rate);
             led.strobe(rate);
+            socket.emit("localMessage", "Flash rate set to " + rate);
         } else {
             console.log('The board is not ready...');
+            socket.emit("localMessage", "Board not yet ready...");
+
         }
 
     });
