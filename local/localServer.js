@@ -64,10 +64,9 @@ board.on("ready", function () {
             if (board.isReady) {
                 console.log("Board is ready. Updating the flash rate to ", rate);
                 led.strobe(rate);
-                socket.emit("localMessage", "Flash rate set to " + rate);
 
                 socket.emit("boardSensor", {
-                    dateTime: d.getUTCFullYear(),
+                    dateTime: Date.now(),
                     action: "strobe",
                     description: "rate of strobe set",
                     pin: 13,
@@ -85,9 +84,8 @@ board.on("ready", function () {
 
     onButton.on("down", function (value) {
         console.log("Button pressed", value);
-        var d = Date.now();
         socket.emit("boardSensor", {
-            dateTime: d.getUTCFullYear(),
+            dateTime: Date.now(),
             action: "pushButton",
             description: "button pressed down",
             pin: 2,
