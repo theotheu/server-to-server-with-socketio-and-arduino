@@ -16,32 +16,32 @@ remoteServer.on("connect", function () {
         //io.to('lobby').emit('message',data);
     });
 });
-
-io.sockets.on("connection", function (socket) {
-    // Display a connected message
-    console.log("User-Client Connected!");
-
-    // Lets force this connection into the lobby room.
-    //socket.join('lobby');
-
-    // Some roster/user management logic to track them
-    // This would be upto you to add :)
-
-    // When we receive a message...
-    socket.on("message", function (data) {
-        // We need to just forward this message to our other guy
-        // We are literally just forwarding the whole data packet
-        remoteServer.emit("message", data);
-    });
-
-    socket.on("disconnect", function (data) {
-        // We need to notify Server 2 that the client has disconnected
-        remoteServer.emit("message", "UD," + socket.id);
-
-        // Other logic you may or may not want
-        // Your other disconnect code here
-    });
-});
+//
+//io.sockets.on("connection", function (socket) {
+//    // Display a connected message
+//    console.log("User-Client Connected!");
+//
+//    // Lets force this connection into the lobby room.
+//    //socket.join('lobby');
+//
+//    // Some roster/user management logic to track them
+//    // This would be upto you to add :)
+//
+//    // When we receive a message...
+//    socket.on("message", function (data) {
+//        // We need to just forward this message to our other guy
+//        // We are literally just forwarding the whole data packet
+//        remoteServer.emit("message", data);
+//    });
+//
+//    socket.on("disconnect", function (data) {
+//        // We need to notify Server 2 that the client has disconnected
+//        remoteServer.emit("message", "UD," + socket.id);
+//
+//        // Other logic you may or may not want
+//        // Your other disconnect code here
+//    });
+//});
 
 // Client
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
@@ -114,6 +114,9 @@ board.on("ready", function () {
 
     socket.on('setServo', function (data) {
         var angle = parseInt(data, 10);
+        if(angle>175) {
+            angle=175;
+        }
         var obj = {
             dateTime: Date.now(),
             actor: "servo",
@@ -125,10 +128,9 @@ board.on("ready", function () {
 
         console.log(obj);
 
-        led.strobe(rate);
+        servo.to(angle); // half speed clockwise
 
         socket.emit("boardSensor", obj);
-
 
     });
 
@@ -218,6 +220,5 @@ board.on("ready", function () {
         }
     });
 
-    servo.to(176); // half speed clockwise
 
 });
