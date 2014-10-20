@@ -10,11 +10,11 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 
-server.listen(port, function() {
+server.listen(port, function () {
     console.log('Listening on port ' + port);
 });
 
-io.sockets.on("connection",function(socket){
+io.sockets.on("connection", function (socket) {
     // Display a connected message
     console.log("Server-Client Connected!");
 
@@ -24,15 +24,22 @@ io.sockets.on("connection",function(socket){
     });
 
     // When we receive a message...
-    socket.on("boardSensor",function(data){
+    socket.on("boardSensor", function (data) {
         console.log('boardSensor', data);
-        io.sockets.emit('logMessage', data);
+
+        io.sockets.emit('logMessage', {
+            dateTime: Date.now(),
+            data: data
+        });
     });
 
     // When we receive a message...
-    socket.on("pushButton",function(data){
+    socket.on("pushButton", function (data) {
         console.log('pushButton', data);
-        io.sockets.emit('logMessage', data);
+        io.sockets.emit('logMessage', {
+            dateTime: Date.now(),
+            data: data
+        });
     });
 
 
