@@ -1,4 +1,4 @@
-// Server 1
+// localServer.js
 var io = require("socket.io").listen(8099); // This is the Server for SERVER 1
 var five = require("johnny-five");
 var board = new five.Board();
@@ -43,7 +43,6 @@ io.sockets.on("connection", function (socket) {
 });
 
 // Client
-//var socket = remoteServer.connect('http://server7.tezzt.nl:8100');
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
 socket.on('connect', function () {
 
@@ -68,5 +67,7 @@ socket.on('connect', function () {
 // Initialize the board
 board.on("ready", function() {
     led = new five.Led(13);
-    led.off(); // on off every second
+    led.off(); // start with led off
+
+
 });
