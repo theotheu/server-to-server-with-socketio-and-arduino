@@ -50,7 +50,7 @@ board.on("ready", function () {
     console.log(Date.now(), "Board is now ready for reading from sensors and writing to actors.");
 
     // Create a new `push button` hardware instance.
-    button = new five.Button(2); // pin 2
+    button = new five.Button(8); // pin 8
 
     // Create a new `led` hardware instance.
     led = new five.Led(13); // pin 13
@@ -60,14 +60,6 @@ board.on("ready", function () {
     potentiometer = new five.Sensor({
         pin: "A0",
         freq: 250
-    });
-
-
-
-    board.repl.inject({
-        button: button,
-        led:led,
-        pot: potentiometer
     });
 
     // socket events
@@ -117,25 +109,47 @@ board.on("ready", function () {
         }
 
     });
+    // Inject the `button` hardware into
+    // the Repl instance's context;
+    // allows direct command line access
+    board.repl.inject({
+        button: button
+    });
 
+    // Button Event API
     /**
      * http://node-ardx.org/exercises/7
      */
     button.on("down", function (value) {
-        console.log('2221');
         var obj = {
             dateTime: Date.now(),
             sensor: "pushButton",
             action: "down",
             description: "button pressed down",
-            pin: 2,
+            pin: 8,
             value: value,
             pressed: true
         };
         console.log(obj);
 
-        //socket.emit("boardSensor", obj);
+        socket.emit("boardSensor", obj);
     });
+
+    button.on("up", function (value) {
+        var obj = {
+            dateTime: Date.now(),
+            sensor: "pushButton",
+            action: "up",
+            description: "button released",
+            pin: 8,
+            value: value,
+            pressed: true
+        };
+        console.log(obj);
+
+        socket.emit("boardSensor", obj);
+    });
+
 
     button.on("hold", function (value) {
         var obj = {
@@ -152,20 +166,20 @@ board.on("ready", function () {
         socket.emit("boardSensor", obj);
     });
 
-//    button.on("up", function (value) {
-//        var obj = {
-//            dateTime: Date.now(),
-//            sensor: "pushButton",
-//            action: "up",
-//            description: "button pressed up",
-//            pin: 2,
-//            value: value,
-//            pressed: true
-//        };
-//        console.log(obj);
-//
-//        socket.emit("boardSensor", obj);
-//    });
+    button.on("up", function (value) {
+        var obj = {
+            dateTime: Date.now(),
+            sensor: "pushButton",
+            action: "up",
+            description: "button pressed up",
+            pin: 2,
+            value: value,
+            pressed: true
+        };
+        console.log(obj);
+
+        socket.emit("boardSensor", obj);
+    });
 
 
     potentiometer.on("data", function() {
