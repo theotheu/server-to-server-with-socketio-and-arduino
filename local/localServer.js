@@ -93,37 +93,43 @@ board.on("ready", function () {
 
     socket.on('setMilliseconds', function (data) {
         var rate = parseInt(data, 10);
-        console.log("We got a new flash rate (" + rate + ' milliseconds). If the board is ready, we will update the flash rate.\n');
+        var obj = {
+            dateTime: Date.now(),
+            actor: "led",
+            action: "strobe",
+            description: "rate of strobe set",
+            pin: 13,
+            value: rate
+        };
 
-        // if board is ready
-        if (board.isReady) {
-            var obj = {
-                dateTime: Date.now(),
-                actor: "led",
-                action: "strobe",
-                description: "rate of strobe set",
-                pin: 13,
-                value: rate
-            };
+        console.log(obj);
 
-            console.log(obj);
+        led.strobe(rate);
 
-            led.strobe(rate);
+        socket.emit("boardSensor", obj);
 
-            socket.emit("boardSensor", obj);
-
-        } else {
-            console.log('The board is not ready...');
-            socket.emit("localMessage", "Board not yet ready...");
-
-        }
 
     });
-    // Inject the `button` hardware into
-    // the Repl instance's context;
-    // allows direct command line access
-    board.repl.inject({
-        button: button
+
+
+    socket.on('setServo', function (data) {
+        var angle = parseInt(data, 10);
+        var obj = {
+            dateTime: Date.now(),
+            actor: "servo",
+            action: "to",
+            description: "Set servo to degrees",
+            pin: 10,
+            value: angle
+        };
+
+        console.log(obj);
+
+        led.strobe(rate);
+
+        socket.emit("boardSensor", obj);
+
+
     });
 
     // Button Event API
@@ -192,9 +198,9 @@ board.on("ready", function () {
     });
 
 
-    potentiometer.on("data", function() {
+    potentiometer.on("data", function () {
 
-        if(potPrevVal!==this.value) {
+        if (potPrevVal !== this.value) {
 
             var obj = {
                 dateTime: Date.now(),
@@ -212,6 +218,6 @@ board.on("ready", function () {
         }
     });
 
-    servo.cw(0.5); // half speed clockwise
+    servo.to(176); // half speed clockwise
 
 });

@@ -28,6 +28,11 @@ io.sockets.on("connection", function (socket) {
         io.sockets.emit("setMilliseconds", data);
     });
 
+    socket.on("setServo", function (data) {
+        console.log('setting servo to degrees', data);
+        io.sockets.emit("setServo", data);
+    });
+
     // When we receive a message...
     socket.on("boardSensor", function (data) {
         console.log('boardSensor', data);

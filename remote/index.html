@@ -18,7 +18,7 @@
 <div id="console"></div>
 <form id="send-message">
     <input type="number" id="ms" placeholder="milliseconds"><br>
-    <input type="number" id="servo" placeholder="servo"><br>
+    <input type="number" id="servo" placeholder="servo (degrees)"><br>
     <!--<input type="submit" value="send"/>-->
 </form>
 
@@ -27,7 +27,6 @@
 <script>
     jQuery(function ($) {
         var socket = io.connect();
-        var $messageForm = $("#send-message");
         var $ms = $("#ms");
         var $servo = $("#servo");
         var $console = $("#console");
@@ -47,12 +46,6 @@
                 $servo.val("");
             }                
         });
-
-//        $messageForm.submit(function (e) {
-//            e.preventDefault();
-//            socket.emit("setMilliseconds", $milliseconds.val());
-//            $milliseconds.val("");
-//        });
 
         socket.on("logMessage", function (data) {
             console.log(data);
