@@ -4,7 +4,7 @@ var five = require("johnny-five");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led, onButton, offButton, potentiometer;
+var led, onButton, potentiometer;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -61,32 +61,43 @@ board.on("ready", function () {
 
     // socket events
     socket.on('connect', function () {
-
-        socket.on('setMilliseconds', function (data) {
-            var rate = parseInt(data, 10);
-            console.log("We got a new flash rate (" + rate + ' milliseconds). If the board is ready, we will update the flash rate.\n');
-
-            // if board is ready
-            if (board.isReady) {
-                console.log("Board is ready. Updating the flash rate to ", rate);
-                led.strobe(rate);
-
-                socket.emit("boardSensor", {
-                    dateTime: Date.now(),
-                    actor: "led",
-                    action: "strobe",
-                    description: "rate of strobe set",
-                    pin: 13,
-                    value: rate
-                });
-
-            } else {
-                console.log('The board is not ready...');
-                socket.emit("localMessage", "Board not yet ready...");
-
-            }
-
+        console.log("when wil this happen?");
+        socket.emit("boardSensor", {
+            dateTime: Date.now(),
+            actor: null,
+            action: null,
+            description: "connected!",
+            pin: null,
+            value: null
         });
+
+    });
+
+
+    socket.on('setMilliseconds', function (data) {
+        var rate = parseInt(data, 10);
+        console.log("We got a new flash rate (" + rate + ' milliseconds). If the board is ready, we will update the flash rate.\n');
+
+        // if board is ready
+        if (board.isReady) {
+            console.log("Board is ready. Updating the flash rate to ", rate);
+            led.strobe(rate);
+
+            socket.emit("boardSensor", {
+                dateTime: Date.now(),
+                actor: "led",
+                action: "strobe",
+                description: "rate of strobe set",
+                pin: 13,
+                value: rate
+            });
+
+        } else {
+            console.log('The board is not ready...');
+            socket.emit("localMessage", "Board not yet ready...");
+
+        }
+
     });
 
     /**

@@ -18,6 +18,11 @@ io.sockets.on("connection", function (socket) {
     // Display a connected message
     console.log("Server-Client Connected!");
 
+    io.sockets.emit('logMessage', {
+        dateTime: Date.now(),
+        data: "Laptop with Arduino is now Connected!"
+    });
+
     socket.on("setMilliseconds", function (data) {
         console.log('setting milliseconds on arduino to', data);
         io.sockets.emit("setMilliseconds", data);
