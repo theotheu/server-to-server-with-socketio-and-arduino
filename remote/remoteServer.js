@@ -24,8 +24,8 @@ io.sockets.on("connection",function(socket){
     });
 
     // When we receive a message...
-    socket.on("localMessage",function(data){
-        console.log('localMessage from laptop', data);
+    socket.on("boardSensor",function(data){
+        console.log('boardSensor', data);
         io.sockets.emit('logMessage', data);
     });
 

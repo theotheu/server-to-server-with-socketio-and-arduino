@@ -40,7 +40,7 @@
         });
 
         socket.on("logMessage", function (data) {
-            $console.append(data);
+            $console.append(JSON.toString(data));
             $console.append("<br/>");
         });
 

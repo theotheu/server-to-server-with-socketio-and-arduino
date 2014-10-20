@@ -65,6 +65,15 @@ board.on("ready", function () {
                 console.log("Board is ready. Updating the flash rate to ", rate);
                 led.strobe(rate);
                 socket.emit("localMessage", "Flash rate set to " + rate);
+
+                socket.emit("boardSensor", {
+                    dateTime: d.getUTCFullYear(),
+                    action: "strobe",
+                    description: "rate of strobe set",
+                    pin: 13,
+                    value: rate
+                });
+
             } else {
                 console.log('The board is not ready...');
                 socket.emit("localMessage", "Board not yet ready...");
@@ -76,7 +85,15 @@ board.on("ready", function () {
 
     onButton.on("down", function (value) {
         console.log("Button pressed", value);
-        socket.emit("pushButton", "button pusht!");
+        var d = Date.now();
+        socket.emit("boardSensor", {
+            dateTime: d.getUTCFullYear(),
+            action: "pushButton",
+            description: "button pressed down",
+            pin: 2,
+            value: value,
+            pressed: true
+        });
     });
 
 });
