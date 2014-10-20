@@ -40,12 +40,11 @@
         });
 
         socket.on("logMessage", function (data) {
+            console.log(data);
             $console.append(JSON.stringify(data));
             $console.append("<br/>");
         });
 
-
-        $console.scrollIntoView(false);
 
     });
 </script>
