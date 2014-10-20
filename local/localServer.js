@@ -4,7 +4,7 @@ var five = require("johnny-five");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led, onButton = {}, offButton;
+var led, onButton, offButton, potentiometer;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -54,10 +54,10 @@ board.on("ready", function () {
     led.off(); // start with led off
 
     // Create a new `potentiometer` hardware instance.
-    potentiometer = new five.Sensor({
-        pin: "A2",
-        freq: 250
-    });
+//    potentiometer = new five.Sensor({
+//        pin: "A2",
+//        freq: 250
+//    });
 
     // socket events
     socket.on('connect', function () {
@@ -93,6 +93,7 @@ board.on("ready", function () {
      * http://node-ardx.org/exercises/7
      */
     onButton.on("down", function (value) {
+        console.log("button pressed");
         socket.emit("boardSensor", {
             dateTime: Date.now(),
             sensor: "pushButton",
