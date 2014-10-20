@@ -38,7 +38,7 @@
             $messageBox.val("");
         });
 
-        socket.on("newMessage", function (data) {
+        socket.on("logMessage", function (data) {
             $console.append(data);
             $console.append("<br/>");
         });

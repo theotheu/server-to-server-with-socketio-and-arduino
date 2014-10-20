@@ -26,13 +26,13 @@ io.sockets.on("connection",function(socket){
     // When we receive a message...
     socket.on("localMessage",function(data){
         console.log('localMessage from laptop', data);
-        io.sockets.emit('localMessage', data);
+        io.sockets.emit('logMessage', data);
     });
 
     // When we receive a message...
     socket.on("pushButton",function(data){
         console.log('pushButton', data);
-        io.sockets.emit('localMessage', data);
+        io.sockets.emit('logMessage', data);
     });
 
 
