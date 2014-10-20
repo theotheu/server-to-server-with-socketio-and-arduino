@@ -4,7 +4,7 @@ var five = require("johnny-five");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led;
+var led, onButton = {}, offButton;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -44,30 +44,44 @@ io.sockets.on("connection", function (socket) {
 
 // Client
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
-socket.on('connect', function () {
+board.on("ready", function () {
 
-    socket.on('setMilliseconds', function (data) {
-        var rate = parseInt(data, 10);
-        console.log("We got a new flash rate (" + rate +  ' milliseconds). If the board is ready, we will update the flash rate.\n');
+    onButton = new five.Button(2); // pin 2
 
-        // if board is ready
-        if (board.isReady) {
-            console.log("Board is ready. Updating the flash rate to ", rate);
-            led.strobe(rate);
-            socket.emit("localMessage", "Flash rate set to " + rate);
-        } else {
-            console.log('The board is not ready...');
-            socket.emit("localMessage", "Board not yet ready...");
-
-        }
-
-    });
-});
-
-// Initialize the board
-board.on("ready", function() {
-    led = new five.Led(13);
+    led = new five.Led(13); // pin 13
     led.off(); // start with led off
 
+    socket.on('connect', function () {
+
+
+        socket.on('setMilliseconds', function (data) {
+            var rate = parseInt(data, 10);
+            console.log("We got a new flash rate (" + rate + ' milliseconds). If the board is ready, we will update the flash rate.\n');
+
+            // if board is ready
+            if (board.isReady) {
+                console.log("Board is ready. Updating the flash rate to ", rate);
+                led.strobe(rate);
+                socket.emit("localMessage", "Flash rate set to " + rate);
+            } else {
+                console.log('The board is not ready...');
+                socket.emit("localMessage", "Board not yet ready...");
+
+            }
+
+        });
+    });
+
+    onButton.on("down", function (value) {
+        console.log("Button pressed", value);
+        socket.emit("pushButton", "button pusht!");
+    });
 
 });
+
+//// Initialize the board
+//board.on("ready", function () {
+//
+//
+//
+//});
