@@ -46,13 +46,15 @@ io.sockets.on("connection", function (socket) {
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
 board.on("ready", function () {
 
+    // actor and sensor initialization
     onButton = new five.Button(2); // pin 2
 
     led = new five.Led(13); // pin 13
     led.off(); // start with led off
 
-    socket.on('connect', function () {
 
+    // socket events
+    socket.on('connect', function () {
 
         socket.on('setMilliseconds', function (data) {
             var rate = parseInt(data, 10);

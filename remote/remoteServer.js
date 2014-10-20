@@ -29,4 +29,13 @@ io.sockets.on("connection",function(socket){
         io.sockets.emit('localMessage', data);
         // We got a message... I dunno what we should do with this...
     });
+
+    // When we receive a message...
+    socket.on("pushButton",function(data){
+        console.log('pushButton', data);
+        io.sockets.emit('localMessage', data);
+        // We got a message... I dunno what we should do with this...
+    });
+
+
 });
