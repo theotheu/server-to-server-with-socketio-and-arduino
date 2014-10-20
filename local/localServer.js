@@ -5,7 +5,7 @@ var os = require("os");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led, button, potentiometer, potPrevVal;
+var led, button, potentiometer, potPrevVal, servo;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -60,6 +60,16 @@ board.on("ready", function () {
     potentiometer = new five.Sensor({
         pin: "A0",
         freq: 250
+    });
+
+
+    // Create a new `servo` hardware instance.
+    servo = new five.Servo({
+        pin: 10,
+        // `type` defaults to standard servo.
+        // For continuous rotation servos, override the default
+        // by setting the `type` here
+        type: "continuous"
     });
 
     // socket events
@@ -201,4 +211,7 @@ board.on("ready", function () {
             potPrevVal = this.value;
         }
     });
+
+    servo.cw(0.5); // half speed clockwise
+
 });

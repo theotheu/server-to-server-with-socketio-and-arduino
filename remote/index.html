@@ -18,9 +18,8 @@
 <div id="console"></div>
 <form id="send-message">
     <input type="number" id="ms" placeholder="milliseconds"><br>
-    <input type="submit" value="send"/>
-
-    <div id="heartbeat">...</div>
+    <input type="number" id="servo" placeholder="servo"><br>
+    <!--<input type="submit" value="send"/>-->
 </form>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -32,6 +31,10 @@
         var $messageBox = $("#ms");
         var $console = $("#console");
 
+        $('input.servo').keypress(function (e) {
+            if (e.which === 13)
+                console.log("pressed enter");
+        });
 
         $messageForm.submit(function (e) {
             e.preventDefault();
