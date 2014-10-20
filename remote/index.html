@@ -31,10 +31,18 @@
         var $milliseconds = $("#ms");
         var $console = $("#console");
 
+        $('#ms').keypress(function (e) {
+            if (e.which === 13){
+                e.preventDefault();
+                socket.emit("setMilliseconds", $ms.val());
+                $ms.val("");
+            }
+        });
+
         $('#servo').keypress(function (e) {
             if (e.which === 13){
                 e.preventDefault();
-                socket.emit("setMilliseconds", $milliseconds.val());
+                socket.emit("setServo", $milliseconds.val());
                 $milliseconds.val("");
             }                
         });
