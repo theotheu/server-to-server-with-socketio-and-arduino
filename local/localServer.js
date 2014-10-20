@@ -1,10 +1,11 @@
 // localServer.js
 var io = require("socket.io").listen(8099); // This is the Server for SERVER 1
 var five = require("johnny-five");
+var os = require("os");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led, onButton, potentiometer;
+var led, button, potentiometer;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -46,33 +47,47 @@ io.sockets.on("connection", function (socket) {
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
 board.on("ready", function () {
 
+    console.log(Date.now(), "Board is now ready for reading from sensors and writing to actors.");
+
     // Create a new `push button` hardware instance.
-    onButton = new five.Button(2); // pin 2
+    button = new five.Button(2); // pin 2
 
     // Create a new `led` hardware instance.
     led = new five.Led(13); // pin 13
     led.off(); // start with led off
 
     // Create a new `potentiometer` hardware instance.
-//    potentiometer = new five.Sensor({
-//        pin: "A2",
-//        freq: 250
-//    });
+    potentiometer = new five.Sensor({
+        pin: "A0",
+        freq: 250
+    });
+
+
+
+    board.repl.inject({
+        button: button,
+        led:led,
+        pot: potentiometer
+    });
 
     // socket events
     socket.on('connect', function () {
-        console.log("when wil this happen?");
-        socket.emit("boardSensor", {
+        var obj = {
             dateTime: Date.now(),
-            actor: null,
+            actor: "os",
             action: null,
             description: "connected!",
             pin: null,
-            value: null
-        });
+            value: null,
+            detail: {
+                hostname: os.hostname(),
+                networkInterfaces: os.networkInterfaces()
+            }
+        };
+        console.log(obj);
+        socket.emit("boardSensor", obj);
 
     });
-
 
     socket.on('setMilliseconds', function (data) {
         var rate = parseInt(data, 10);
@@ -80,17 +95,20 @@ board.on("ready", function () {
 
         // if board is ready
         if (board.isReady) {
-            console.log("Board is ready. Updating the flash rate to ", rate);
-            led.strobe(rate);
-
-            socket.emit("boardSensor", {
+            var obj = {
                 dateTime: Date.now(),
                 actor: "led",
                 action: "strobe",
                 description: "rate of strobe set",
                 pin: 13,
                 value: rate
-            });
+            };
+
+            console.log(obj);
+
+            led.strobe(rate);
+
+            socket.emit("boardSensor", obj);
 
         } else {
             console.log('The board is not ready...');
@@ -103,9 +121,9 @@ board.on("ready", function () {
     /**
      * http://node-ardx.org/exercises/7
      */
-    onButton.on("down", function (value) {
-        console.log("button pressed");
-        socket.emit("boardSensor", {
+    button.on("down", function (value) {
+        console.log('2221');
+        var obj = {
             dateTime: Date.now(),
             sensor: "pushButton",
             action: "down",
@@ -113,7 +131,55 @@ board.on("ready", function () {
             pin: 2,
             value: value,
             pressed: true
-        });
+        };
+        console.log(obj);
+
+        //socket.emit("boardSensor", obj);
     });
 
+    button.on("hold", function (value) {
+        var obj = {
+            dateTime: Date.now(),
+            sensor: "pushButton",
+            action: "hold",
+            description: "button hold",
+            pin: 2,
+            value: value,
+            pressed: true
+        };
+        console.log(obj);
+
+        socket.emit("boardSensor", obj);
+    });
+
+    button.on("up", function (value) {
+        var obj = {
+            dateTime: Date.now(),
+            sensor: "pushButton",
+            action: "up",
+            description: "button pressed up",
+            pin: 2,
+            value: value,
+            pressed: true
+        };
+        console.log(obj);
+
+        socket.emit("boardSensor", obj);
+    });
+
+
+    potentiometer.on("data", function() {
+        console.log(this.value, this.raw);
+        var obj = {
+            dateTime: Date.now(),
+            sensor: "potentiometer",
+            action: "up",
+            description: "potentiometer value changed",
+            pin: "A0",
+            value: this.value
+        };
+        console.log(obj);
+
+        socket.emit("boardSensor", obj);
+    });
 });
