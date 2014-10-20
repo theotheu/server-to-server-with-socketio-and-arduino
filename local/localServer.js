@@ -46,12 +46,18 @@ io.sockets.on("connection", function (socket) {
 var socket = remoteServer.connect(localConfig.remote.fqdn + ':' + localConfig.remote.port);
 board.on("ready", function () {
 
-    // actor and sensor initialization
+    // Create a new `push button` hardware instance.
     onButton = new five.Button(2); // pin 2
 
+    // Create a new `led` hardware instance.
     led = new five.Led(13); // pin 13
     led.off(); // start with led off
 
+    // Create a new `potentiometer` hardware instance.
+    potentiometer = new five.Sensor({
+        pin: "A2",
+        freq: 250
+    });
 
     // socket events
     socket.on('connect', function () {
@@ -67,6 +73,7 @@ board.on("ready", function () {
 
                 socket.emit("boardSensor", {
                     dateTime: Date.now(),
+                    actor: "led",
                     action: "strobe",
                     description: "rate of strobe set",
                     pin: 13,
@@ -82,11 +89,14 @@ board.on("ready", function () {
         });
     });
 
+    /**
+     * http://node-ardx.org/exercises/7
+     */
     onButton.on("down", function (value) {
-        console.log("Button pressed", value);
         socket.emit("boardSensor", {
             dateTime: Date.now(),
-            action: "pushButton",
+            sensor: "pushButton",
+            action: "down",
             description: "button pressed down",
             pin: 2,
             value: value,
@@ -95,10 +105,3 @@ board.on("ready", function () {
     });
 
 });
-
-//// Initialize the board
-//board.on("ready", function () {
-//
-//
-//
-//});
