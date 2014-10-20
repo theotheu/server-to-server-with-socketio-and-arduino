@@ -5,7 +5,7 @@
     <style>
         #console {
             height: 100px;
-            width: 200px;
+            width: 400px;
             border: solid 1px black;
             font-family: "monospace";
             overflow: scroll;
@@ -40,8 +40,7 @@
         });
 
         socket.on("logMessage", function (data) {
-            console.log(data);
-            $console.append(data);
+            $console.append(JSON.stringify(data));
             $console.append("<br/>");
         });
 
