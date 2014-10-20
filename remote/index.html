@@ -28,7 +28,8 @@
     jQuery(function ($) {
         var socket = io.connect();
         var $messageForm = $("#send-message");
-        var $milliseconds = $("#ms");
+        var $ms = $("#ms");
+        var $servo = $("#servo");
         var $console = $("#console");
 
         $('#ms').keypress(function (e) {
@@ -42,8 +43,8 @@
         $('#servo').keypress(function (e) {
             if (e.which === 13){
                 e.preventDefault();
-                socket.emit("setServo", $milliseconds.val());
-                $milliseconds.val("");
+                socket.emit("setServo", $servo.val());
+                $servo.val("");
             }                
         });
 
