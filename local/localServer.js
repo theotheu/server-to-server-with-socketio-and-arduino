@@ -5,7 +5,7 @@ var os = require("os");
 var board = new five.Board();
 var localConfig = require('../config/config.json');
 var remoteServer = require("socket.io-client")(localConfig.remote.fqdn + ':' + localConfig.remote.port); // This is a client connecting to the SERVER 2
-var led, button, potentiometer;
+var led, button, potentiometer, potPrevVal;
 
 remoteServer.on("connect", function () {
     console.log("other server connect");
@@ -152,34 +152,39 @@ board.on("ready", function () {
         socket.emit("boardSensor", obj);
     });
 
-    button.on("up", function (value) {
-        var obj = {
-            dateTime: Date.now(),
-            sensor: "pushButton",
-            action: "up",
-            description: "button pressed up",
-            pin: 2,
-            value: value,
-            pressed: true
-        };
-        console.log(obj);
-
-        socket.emit("boardSensor", obj);
-    });
+//    button.on("up", function (value) {
+//        var obj = {
+//            dateTime: Date.now(),
+//            sensor: "pushButton",
+//            action: "up",
+//            description: "button pressed up",
+//            pin: 2,
+//            value: value,
+//            pressed: true
+//        };
+//        console.log(obj);
+//
+//        socket.emit("boardSensor", obj);
+//    });
 
 
     potentiometer.on("data", function() {
-        console.log(this.value, this.raw);
-        var obj = {
-            dateTime: Date.now(),
-            sensor: "potentiometer",
-            action: "up",
-            description: "potentiometer value changed",
-            pin: "A0",
-            value: this.value
-        };
-        console.log(obj);
 
-        socket.emit("boardSensor", obj);
+        if(potPrevVal!==this.value) {
+
+            var obj = {
+                dateTime: Date.now(),
+                sensor: "potentiometer",
+                action: "up",
+                description: "potentiometer value changed",
+                pin: "A0",
+                value: this.value
+            };
+            console.log(obj);
+
+            socket.emit("boardSensor", obj);
+
+            potPrevVal = this.value;
+        }
     });
 });
