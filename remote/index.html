@@ -28,19 +28,22 @@
     jQuery(function ($) {
         var socket = io.connect();
         var $messageForm = $("#send-message");
-        var $messageBox = $("#ms");
+        var $milliseconds = $("#ms");
         var $console = $("#console");
 
         $('#servo').keypress(function (e) {
-            if (e.which === 13)
-                console.log("pressed enter");
+            if (e.which === 13){
+                e.preventDefault();
+                socket.emit("setMilliseconds", $milliseconds.val());
+                $milliseconds.val("");
+            }                
         });
 
-        $messageForm.submit(function (e) {
-            e.preventDefault();
-            socket.emit("setMilliseconds", $messageBox.val());
-            $messageBox.val("");
-        });
+//        $messageForm.submit(function (e) {
+//            e.preventDefault();
+//            socket.emit("setMilliseconds", $milliseconds.val());
+//            $milliseconds.val("");
+//        });
 
         socket.on("logMessage", function (data) {
             console.log(data);
