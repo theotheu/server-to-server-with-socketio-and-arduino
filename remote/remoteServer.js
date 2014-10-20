@@ -27,14 +27,12 @@ io.sockets.on("connection",function(socket){
     socket.on("localMessage",function(data){
         console.log('localMessage from laptop', data);
         io.sockets.emit('localMessage', data);
-        // We got a message... I dunno what we should do with this...
     });
 
     // When we receive a message...
     socket.on("pushButton",function(data){
         console.log('pushButton', data);
         io.sockets.emit('localMessage', data);
-        // We got a message... I dunno what we should do with this...
     });
 
 
