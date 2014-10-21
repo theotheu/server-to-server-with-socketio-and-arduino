@@ -15,12 +15,10 @@ server.listen(port, function () {
 });
 
 io.sockets.on("connection", function (socket) {
-    // Display a connected message
-    console.log("Server-Client Connected!");
 
     io.sockets.emit('logMessage', {
         dateTime: Date.now(),
-        data: "Laptop with Arduino is now Connected!"
+        data: "Connected with server."
     });
 
     socket.on("setMilliseconds", function (data) {

@@ -56,7 +56,7 @@ board.on("ready", function () {
             dateTime: Date.now(),
             actor: "os",
             action: null,
-            description: "connected!",
+            description: "Laptop connected with server!",
             pin: null,
             value: null,
             detail: {
