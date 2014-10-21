@@ -12,3 +12,6 @@ One on a remote server and one on your laptop.
 1. Configure your application in /config/config.json
 1. Run `npm install` in the local directory for your laptop.
 1. Run `npm install` in the remote directory for your server.
+
+##Wiring
+![Schema](https://raw.githubusercontent.com/theotheu/server-to-server-with-socketio-and-arduino/master/assets/schema_bb.png)
