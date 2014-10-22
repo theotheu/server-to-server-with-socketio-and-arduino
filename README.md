@@ -18,7 +18,4 @@ One on a remote server and one on your laptop.
 1. Point your browser to `http://server7.tezzt.nl:3000`, or the server you are using (not localhost).
 
 ##Infrastructure
-![Infra](http://goo.gl/pAC6Fc)
-![Infra](https://docs.google.com/drawings/d/1pj94xgUijcOLkpKB5FcPyc16BTWTQOqOY7AHEqqS7TY/edit?usp=sharing)
-
-<img src="https://docs.google.com/drawings/d/1pj94xgUijcOLkpKB5FcPyc16BTWTQOqOY7AHEqqS7TY/edit?usp=sharing" alt="infra">
+See http://goo.gl/pAC6Fc
