@@ -2,7 +2,7 @@
 
 Purpose is to have a web enabled arduino connection.
 
-Therefor we need two node instances.
+Therefor we need to have two node instances.
 
 One on a remote server and one on your laptop.
 
