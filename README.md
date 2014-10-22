@@ -19,5 +19,6 @@ One on a remote server and one on your laptop.
 
 ##Infrastructure
 ![Infra](http://goo.gl/pAC6Fc)
+![Infra](https://docs.google.com/drawings/d/1pj94xgUijcOLkpKB5FcPyc16BTWTQOqOY7AHEqqS7TY/edit?usp=sharing)
 
 <img src="https://docs.google.com/drawings/d/1pj94xgUijcOLkpKB5FcPyc16BTWTQOqOY7AHEqqS7TY/edit?usp=sharing" alt="infra">
