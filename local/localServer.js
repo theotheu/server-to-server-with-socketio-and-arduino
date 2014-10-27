@@ -13,15 +13,15 @@ board.on("ready", function () {
     console.log(Date.now(), "Board is now ready for reading from sensors and writing to actors.");
 
     // Create a new `push button` hardware instance.
-    button = new five.Button(localConfig.pushButton);
+    button = new five.Button(localConfig.local.pushButton);
 
     // Create a new `led` hardware instance.
-    led = new five.Led(localConfig.led);
+    led = new five.Led(localConfig.local.led);
     led.off(); // start with led off
 
     // Create a new `potentiometer` hardware instance.
     potentiometer = new five.Sensor({
-        pin: localConfig.potentiometer,
+        pin: localConfig.local.potentiometer,
         freq: 250
     });
 
@@ -31,7 +31,7 @@ board.on("ready", function () {
      * https://github.com/rwaldron/johnny-five/blob/master/docs/servo.md
      */
     servo = new five.Servo({
-        pin: localConfig.servo,
+        pin: localConfig.local.servo,
         // `type` defaults to standard servo.
         // For continuous rotation servos, override the default
         // by setting the `type` here
@@ -64,7 +64,7 @@ board.on("ready", function () {
             actor: "led",
             action: "strobe",
             description: "rate of strobe set",
-            pin: localConfig.led,
+            pin: localConfig.local.led,
             value: rate
         };
 
@@ -87,7 +87,7 @@ board.on("ready", function () {
             actor: "servo",
             action: "to",
             description: "Set servo to degrees",
-            pin: localConfig.servo,
+            pin: localConfig.local.servo,
             value: angle
         };
 
@@ -109,7 +109,7 @@ board.on("ready", function () {
             sensor: "pushButton",
             action: "down",
             description: "button pressed down",
-            pin: localConfig.pushButton,
+            pin: localConfig.local.pushButton,
             value: value,
             pressed: true
         };
@@ -124,7 +124,7 @@ board.on("ready", function () {
             sensor: "pushButton",
             action: "up",
             description: "button released",
-            pin: localConfig.pushButton,
+            pin: localConfig.local.pushButton,
             value: value,
             pressed: true
         };
@@ -139,7 +139,7 @@ board.on("ready", function () {
             sensor: "pushButton",
             action: "hold",
             description: "button hold",
-            pin: localConfig.pushButton, // was 2
+            pin: localConfig.local.pushButton, // was 2
             value: value,
             pressed: true
         };
@@ -154,7 +154,7 @@ board.on("ready", function () {
             sensor: "pushButton",
             action: "up",
             description: "button pressed up",
-            pin: localConfig.pushButton, // was 2
+            pin: localConfig.local.pushButton, // was 2
             value: value,
             pressed: true
         };
@@ -173,7 +173,7 @@ board.on("ready", function () {
                 sensor: "potentiometer",
                 action: "up",
                 description: "potentiometer value changed",
-                pin: localConfig.potentiometer,
+                pin: localConfig.local.potentiometer,
                 value: this.value
             };
             console.log(obj);
