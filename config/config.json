@@ -1,11 +1,12 @@
-
 {
     "local": {
-
+        "pushButton": 8,
+        "led": 13,
+        "potentiometer": "A0",
+        "servo": 10
     },
     "remote": {
         "port":3000,
         "fqdn": "http://server7.tezzt.nl"
     }
-
 }
